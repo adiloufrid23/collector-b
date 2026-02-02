@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Collector{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+  <style>
+    .glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+
+  <header class="sticky top-0 z-50 border-b border-white/10 glass">
+    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400"></div>
+        <div>
+          <p class="text-lg font-semibold leading-5">Collector</p>
+          <p class="text-xs text-slate-300">Marketplace d’objets de collection</p>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-3 text-sm">
+        <a class="px-3 py-2 rounded-xl hover:bg-white/10" href="{% url 'catalog' %}">Catalogue</a>
+        <a class="px-3 py-2 rounded-xl hover:bg-white/10" href="{% url 'item_create' %}">Déposer</a>
+
+        {% if user.is_authenticated %}
+          <span class="hidden sm:inline text-slate-300 text-xs">👤 {{ user.username }}</span>
+
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="px-3 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-300"
+            >
+              Déconnexion
+            </button>
+          </form>
+        {% else %}
+          <a class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20" href="{% url 'login' %}">
+            Connexion
+          </a>
+        {% endif %}
+
+        <a class="px-3 py-2 rounded-xl hover:bg-white/10" href="/admin/">Admin</a>
+      </nav>
+
+      <div class="hidden md:flex items-center gap-2">
+        <span class="hidden sm:inline text-xs text-slate-300">Mode démo</span>
+        <div class="h-2.5 w-2.5 rounded-full bg-emerald-400"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-10">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-white/10">
+    <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-400 flex flex-col sm:flex-row gap-2 justify-between">
+      <p>© {% now "Y" %} Collector — Stack B</p>
+      <p class="text-slate-500">Django + HTMX + MySQL + Redis + Celery</p>
+    </div>
+  </footer>
+
+</body>
+</html>

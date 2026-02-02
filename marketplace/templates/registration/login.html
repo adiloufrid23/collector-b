@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Connexion — Collector{% endblock %}
+
+{% block content %}
+  <section class="max-w-md mx-auto rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl">
+    <h1 class="text-2xl font-bold">Connexion</h1>
+
+    <form method="post" class="mt-6 space-y-4">
+      {% csrf_token %}
+
+      <div>
+        <label class="text-xs text-slate-400">Utilisateur</label>
+        <input name="username" required class="mt-2 w-full rounded-2xl bg-slate-950/40 border border-white/10 px-4 py-3" />
+      </div>
+
+      <div>
+        <label class="text-xs text-slate-400">Mot de passe</label>
+        <input type="password" name="password" required class="mt-2 w-full rounded-2xl bg-slate-950/40 border border-white/10 px-4 py-3" />
+      </div>
+
+      <button class="inline-flex px-4 py-2 rounded-2xl bg-gradient-to-r from-indigo-500 to-cyan-400 text-slate-950 font-semibold text-sm">
+        Se connecter
+      </button>
+    </form>
+  </section>
+{% endblock %}

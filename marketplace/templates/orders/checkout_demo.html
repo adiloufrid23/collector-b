@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Paiement (démo){% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white/5 border border-white/10 rounded-3xl p-6">
+  <h1 class="text-xl font-semibold">Paiement (mode démo)</h1>
+  <p class="mt-2 text-slate-300">
+    Stripe n'est pas configuré. Voici un checkout démo pour l'order #{{ order.id }}.
+  </p>
+  <div class="mt-4 text-slate-200">
+    <p><b>Article:</b> {{ order.item.title }}</p>
+    <p><b>Total:</b> {{ order.total_cents|floatformat:0 }} cts</p>
+  </div>
+  <a href="/account/" class="inline-block mt-6 px-4 py-2 rounded-2xl bg-white/10 border border-white/10">
+    Retour au compte
+  </a>
+</div>
+{% endblock %}

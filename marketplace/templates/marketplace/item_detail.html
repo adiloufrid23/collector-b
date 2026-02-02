@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{{ item.title }} – Collector</title>
+</head>
+<body>
+
+  <p><a href="/">← Retour au catalogue</a></p>
+
+  <h1>{{ item.title }}</h1>
+
+  <p>{{ item.description }}</p>
+
+  <p><strong>Prix :</strong> {{ item.price_cents }} centimes</p>
+  <p><strong>Vendeur :</strong> {{ item.seller.username }}</p>
+
+  <hr>
+
+  {% if item.is_sold %}
+    <p style="color:red;"><strong>VENDU</strong></p>
+  {% else %}
+    <a href="/orders/buy/{{ item.id }}/">Acheter</a>
+  {% endif %}
+
+  <hr>
+
+  {% if user.is_authenticated %}
+    <p>Connecté en tant que <strong>{{ user.username }}</strong> — <a href="/logout/">Déconnexion</a></p>
+  {% else %}
+    <p><a href="/login/">Se connecter</a></p>
+  {% endif %}
+
+</body>
+</html>
