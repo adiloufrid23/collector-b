@@ -15,7 +15,7 @@ class Item(models.Model):
         PENDING = "PENDING", "Pending"
         APPROVED = "APPROVED", "Approved"
         REJECTED = "REJECTED", "Rejected"
-
+    photo = models.ImageField(upload_to="items/", blank=True, null=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
 

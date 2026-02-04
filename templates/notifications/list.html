@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Notifications — Collector{% endblock %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold">Notifications</h1>
+    <a href="{% url 'notification_preferences' %}" class="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20">
+      Préférences
+    </a>
+  </div>
+
+  <div class="space-y-3">
+    {% for n in notifs %}
+      <div class="rounded-3xl border border-white/10 bg-white/5 p-5 flex items-start justify-between gap-4">
+        <div>
+          <p class="font-semibold {% if not n.is_read %}text-emerald-200{% endif %}">
+            {{ n.title }}
+          </p>
+          <p class="text-sm text-slate-300 mt-1">{{ n.message }}</p>
+          <p class="text-xs text-slate-500 mt-2">{{ n.created_at }}</p>
+
+          {% if n.item %}
+            <a class="text-xs text-cyan-300 hover:underline" href="{% url 'item_detail' n.item.id %}">
+              Voir l’annonce →
+            </a>
+          {% endif %}
+        </div>
+
+        {% if not n.is_read %}
+          <a href="{% url 'notification_mark_read' n.id %}" class="px-3 py-2 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 text-emerald-200 text-sm">
+            Marquer lu
+          </a>
+        {% else %}
+          <span class="text-xs text-slate-500">Lu</span>
+        {% endif %}
+      </div>
+    {% empty %}
+      <div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center text-slate-300">
+        Aucune notification pour le moment.
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

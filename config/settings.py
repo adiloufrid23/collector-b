@@ -51,12 +51,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # Apps
-    "marketplace",
-    "orders",
-    "notifications",
     "accounts.apps.AccountsConfig",
+    "marketplace.apps.MarketplaceConfig",
+    "orders",
     "chat",
-]
+    "notifications.apps.NotificationsConfig",
+    
+    ]
 
 # =========================================================
 # MIDDLEWARE

@@ -10,4 +10,4 @@ User = get_user_model()
 @receiver(post_save, sender=User)
 def create_profile_for_user(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.get_or_create(user=instance)
+        UserProfile.objects.create(user=instance)

@@ -14,6 +14,8 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("chat/", include("chat.urls")),
     path("accounts/", include("accounts.urls")),
+    path("notifications/", include("notifications.urls")),
+
 ]
 
 if settings.DEBUG:

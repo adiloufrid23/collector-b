@@ -1,9 +1,15 @@
+# orders/urls.py
 from django.urls import path
-from .views import buy_item, checkout_order, payment_success, payment_cancel
+from . import views
 
 urlpatterns = [
-    path("buy/<int:item_id>/", buy_item, name="buy_item"),
-    path("checkout/<int:order_id>/", checkout_order, name="checkout_order"),
-    path("success/", payment_success, name="payment_success"),
-    path("cancel/", payment_cancel, name="payment_cancel"),
+    path("buy/<int:item_id>/", views.buy_item, name="buy_item"),
+    path("checkout/<int:order_id>/", views.checkout_order, name="checkout_order"),
+
+    # ✅ ces 2 noms doivent exister car tu fais redirect("payment_success") / redirect("payment_cancel")
+    path("success/", views.payment_success, name="payment_success"),
+    path("cancel/", views.payment_cancel, name="payment_cancel"),
+
+    # optionnel (si tu veux garder une autre page)
+    # path("success-page/", views.success, name="success"),
 ]

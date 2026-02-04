@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Préférences notifications — Collector{% endblock %}
+
+{% block content %}
+<section class="max-w-xl mx-auto rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl">
+  <h1 class="text-2xl font-bold">Préférences de notifications</h1>
+  <p class="mt-2 text-sm text-slate-300">
+    Choisis comment tu veux être notifié quand un nouvel article est mis en ligne.
+  </p>
+
+  <form method="post" class="mt-6 space-y-4">
+    {% csrf_token %}
+
+    <label class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      {{ form.in_app_enabled }} <span>Notifications dans l’espace perso</span>
+    </label>
+
+    <label class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      {{ form.email_enabled }} <span>Notifications par email</span>
+    </label>
+
+    <label class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      {{ form.only_interests }} <span>Uniquement selon mes centres d’intérêt</span>
+    </label>
+
+    <button class="w-full mt-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-cyan-400 py-3 font-semibold text-slate-950">
+      Enregistrer
+    </button>
+  </form>
+</section>
+{% endblock %}

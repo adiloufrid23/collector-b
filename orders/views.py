@@ -1,13 +1,13 @@
 # orders/views.py
 import stripe
 from django.conf import settings
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse
+
 from marketplace.models import Item
 from .models import Order
 from notifications.tasks import notify_order_created
-from django.shortcuts import render
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -25,16 +25,17 @@ def buy_item(request, item_id):
     order = Order.objects.create(
         buyer=buyer,
         item=item,
-        total_cents=item.total_cents,  # ✅ inclut shipping
+        total_cents=item.total_cents,
         status=Order.Status.PENDING
     )
 
     item.is_sold = True
     item.save(update_fields=["is_sold"])
 
-    notify_order_created.delay(order.id, buyer.username, item.title)
+    # ✅ notif vendeur/acheteur
+    notify_order_created.delay(order.id)
 
-    # ✅ Si Stripe pas configuré => on passe en mode démo
+    # ✅ Mode démo si Stripe non configuré
     if not settings.STRIPE_SECRET_KEY:
         order.status = Order.Status.PAID
         order.save(update_fields=["status"])
@@ -48,7 +49,8 @@ def checkout_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, buyer=request.user)
 
     if not settings.STRIPE_SECRET_KEY:
-        return HttpResponse("Paiement désactivé (mode démo).", status=200)
+        # tu as un template checkout_demo.html => on l’utilise
+        return render(request, "orders/checkout_demo.html", {"order": order})
 
     session = stripe.checkout.Session.create(
         mode="payment",
@@ -72,11 +74,10 @@ def checkout_order(request, order_id):
 
 
 def payment_success(request):
-    return HttpResponse("Paiement validé ✅ (mode démo ou webhook).")
+    # ✅ tu as déjà orders_success.html
+    return render(request, "orders/orders_success.html")
 
 
 def payment_cancel(request):
-    return HttpResponse("Paiement annulé ❌")
-
-def success(request):
-    return render(request, "orders/orders_success.html")
+    # ✅ tu as déjà orders_cancel.html
+    return render(request, "orders/orders_cancel.html")
